@@ -36,6 +36,8 @@ media/
 # Translations
 *.mo
 
+*.csv
+
 # Mr Developer
 .mr.developer.cfg
 .project
