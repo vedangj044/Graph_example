@@ -11,6 +11,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+    <link href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css" rel="stylesheet">
 
   </head>
   <body>
@@ -33,17 +35,17 @@
           </select>
         </div>
         <div class="input-field col s2">
-          <select id="select13">
+          <select id="filterparam1">
             <option value="" disabled selected></option>
             <option value="1">WHERE</option>
           </select>
         </div>
         <div class="input-field col s2 14">
-          <input type="text" id="autocomplete-input" class="autocomplete">
+          <input type="text" id="autocomplete-input1" class="autocomplete">
           <label for="autocomplete-input">Filter</label>
         </div>
         <div class="input-field col s2 14">
-          <input id="email" type="text" class="validate">
+          <input id="name1" type="text" class="validate">
           <label for="email">Name</label>
         </div>
 
@@ -52,64 +54,64 @@
 
 
     <div class="row container" id="line2">
-        <div class="input-field col s2" id="initparam2">
-          <select>
+        <div class="input-field col s2" >
+          <select id="initparam2">
             <option value="1">MATCH</option>
             <option value="3">RETURN</option>
           </select>
         </div>
-        <div class="input-field col s3" id="postparam2">
-          <select>
+        <div class="input-field col s3" >
+          <select id="postparam2">
             <option value="1">All</option>
-            <option value="1">Programmer</option>
-            <option value="2">Skill</option>
-            <option value="2">Knows</option>
+            <option value="1">programmer</option>
+            <option value="2">skill</option>
+            <option value="2">knows</option>
           </select>
         </div>
         <div class="input-field col s2">
-          <select id="select23">
+          <select id="filterparam2">
             <option value="" disabled selected></option>
             <option value="1">WHERE</option>
           </select>
         </div>
         <div class="input-field col s2 24">
-          <input type="text" id="autocomplete-input" class="autocomplete">
+          <input type="text" id="autocomplete-input2" class="autocomplete">
           <label for="autocomplete-input">Filter</label>
         </div>
         <div class="input-field col s2 24">
-          <input id="email" type="text" class="validate">
+          <input id="name2" type="text" class="validate">
           <label for="email">Name</label>
         </div>
 
         <i class="small material-icons" id="line2add" style="padding:25px;cursor:pointer">add_circle_outline</i>
     </div>
     <div class="row container" id="line3">
-        <div class="input-field col s2" id="initparam3">
-          <select>
+        <div class="input-field col s2" >
+          <select id="initparam3">
             <option value="1">MATCH</option>
             <option value="3">RETURN</option>
           </select>
         </div>
-        <div class="input-field col s3" id="postparam3">
-          <select>
-            <option value="1">ALL</option>
-            <option value="1">Programmer</option>
-            <option value="2">Skill</option>
-            <option value="2">Knows</option>
+        <div class="input-field col s3" >
+          <select id="postparam3">
+            <option value="1">All</option>
+            <option value="1">programmer</option>
+            <option value="2">skill</option>
+            <option value="2">knows</option>
           </select>
         </div>
         <div class="input-field col s2">
-          <select id="select33">
+          <select id="filterparam3">
             <option value="" disabled selected></option>
             <option value="1">WHERE</option>
           </select>
         </div>
         <div class="input-field col s2 34">
           <input type="text" id="autocomplete-input" class="autocomplete">
-          <label for="autocomplete-input">Filter</label>
+          <label for="autocomplete-input3">Filter</label>
         </div>
         <div class="input-field col s2 34">
-          <input id="email" type="text" class="validate">
+          <input id="name3" type="text" class="validate">
           <label for="email">Name</label>
         </div>
 
@@ -118,6 +120,17 @@
       <a class="waves-effect waves-light btn-large"><i class="material-icons right">send</i>Execute</a>
       <p id="output"></p>
     <div>
+    <div class="container center">
+      <table id="example">
+        <thead>
+                <tr>
+                    <th>Programmer</th>
+                    <th>knows</th>
+                    <th>Skill</th>
+                </tr>
+            </thead>
+      </table>
+    </div>
   </body>
   <script>
     $(document).ready(function(){
@@ -153,15 +166,15 @@
         }
       });
 
-      $('#select13').on('change', function() {
+      $('#filterparam1').on('change', function() {
         $('.14').show();
       });
 
-      $('#select23').on('change', function() {
+      $('#filterparam2').on('change', function() {
         $('.24').show();
       });
 
-      $('#select33').on('change', function() {
+      $('#filterparam3').on('change', function() {
         $('.34').show();
       });
 
@@ -182,24 +195,107 @@
       });
     });
 
+
     $("#execute").click(function(){
+
+      var arr = ['1'];
+      if($('#line2').css('display')==='block'){
+        arr.push('2')
+      }
+      if($('#line3').css('display')==='block'){
+        arr.push('3')
+      }
+
       console.log("clicked");
       var query = "";
-      query+=$('#initparam1 option:selected').text()+" ";
-      if (query == "MATCH " && $('#postparam1 option:selected').text() == "All"){
-          query = 'ERROR'
-      }
-      else if (query == "RETURN " && $('#postparam1 option:selected').text() == "All"){
-          query = 'MATCH (p:programmer)-[k:knows]->(s:skill) RETURN (p.name)-[k.weight]->(s.name) LIMIT 50';
-      }
-      else{
-        if($('#postparam1 option:selected').text() == 'knows'){
-          query+= '[p:knows]';
+
+      for(var i=0; i<arr.length; i++){
+        elem = arr[i];
+
+        if ($('#initparam'+elem+' option:selected').text() == "MATCH" && $('#postparam'+elem+' option:selected').text() == "All"){
+            query = 'ERROR'
+            $("#output").text(query);
+            return(0);
         }
+        else if ($('#initparam'+elem+' option:selected').text() == "RETURN" && $('#postparam'+elem+' option:selected').text() == "All"){
+
+            if(i==0){
+              query = 'MATCH (p:programmer)-[k:knows]->(s:skill) RETURN p.name, k.weight, s.name LIMIT 50';
+              $("#output").text(query);
+              return(0);
+            }
+            else{
+              if(query.search('p:programmer') == -1){
+                query+=" MATCH (p:programmer) ";
+              }
+              if(query.search('s:skill') == -1){
+                query+=" MATCH (s:skill) ";
+              }
+              if(i==arr.length-1){
+                if(query.search('(p)-[k]') == -1){
+                  query+=" MATCH (p)-[k]->(s)";
+                }
+              }
+
+              query+=" RETURN p.name, k.weight, s.name";
+              $("#output").text(query);
+              var settings = {
+                "url": "http://127.0.0.1:5000/",
+                "method": "POST",
+                "timeout": 0,
+                "headers": {
+                  "Content-Type": "text/plain"
+                },
+                "data": query,
+              };
+
+              $.ajax(settings).done(function (response) {
+                var dataset = eval(response);
+                $('#example').DataTable( {
+                    data: dataset,
+                    columns: [
+                                { title: "Programmer" },
+                                { title: "knows" },
+                                { title: "Skill" },
+                            ]
+                } );
+              });
+              return(0);
+            }
+        }
+
         else{
-          query+= '(p:'+$('#postparam1 option:selected').text()+')';
+          query+=$('#initparam'+elem+' option:selected').text()+" ";
+          if($('#postparam'+elem+' option:selected').text() == 'knows'){
+            query+=" (p)-[k]->(s) "
+            query+=" "+$('#filterparam'+elem+' option:selected').text() + " k.weight";
+            query+=$('#autocomplete-input'+elem).val()+$('#name'+elem).val()+" ";
+          }
+          else{
+            var p = "p"
+            if($('#postparam'+elem+' option:selected').text() == 'skill'){
+              p = "s"
+            }
+            query+= '('+p+':'+$('#postparam'+elem+' option:selected').text()+')';
+            query+=" "+$('#filterparam'+elem+' option:selected').text() + " "+p+".name ";
+            query+=$('#autocomplete-input'+elem).val()+" \'"+$('#name'+elem).val()+"\' ";
+          }
         }
       }
+
+      var settings = {
+        "url": "http://127.0.0.1:5000/",
+        "method": "POST",
+        "timeout": 0,
+        "headers": {
+          "Content-Type": "text/plain"
+        },
+        "data": query,
+      };
+
+      $.ajax(settings).done(function (response) {
+        console.log(response);
+      });
 
       $("#output").text(query);
     });
