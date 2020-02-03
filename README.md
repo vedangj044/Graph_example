@@ -3,7 +3,7 @@
 Redis graph console is a very simple console used to query to redisgraph.
 [redisgraph](https://oss.redislabs.com/redisgraph/) used here was a graph created using [Python client](https://github.com/RedisGraph/redisgraph-py)
 on the [dataset](https://www.kaggle.com/jaimevalero/developers-and-programming-languages/data).
-The redisgraph is exposed to the console via a Flask server. 
+The redisgraph is exposed to the console via a Flask server.
 
 #### Snapshot of the dataset
 
@@ -16,13 +16,14 @@ The redisgraph is exposed to the console via a Flask server.
 ### Installation and demo
 
 #### Creating the graph
+Install redis and initiate a redisgraph server [Instructions](https://oss.redislabs.com/redisgraph/)
 
 `pip install -r requirements.txt`
 
 `python graphCreater.py`
 
 It would take some time.
-Then start the server 
+Then start the server
 
 #### Starting Flask server
 
