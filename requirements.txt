@@ -1,0 +1,4 @@
+redis
+redisgraph
+flask
+flask_cors
